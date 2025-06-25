@@ -1,0 +1,42 @@
+﻿@model List<OgrenciOdevYonetimSistemi.Models.OgrenciViewModel>
+
+@{
+    ViewData["Title"] = "Öğrenci Listesi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-success fw-bold">📋 Öğrenci Listesi</h2>
+
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>Okul No</th>
+                <th>Ad Soyad</th>
+                <th>Sınıf</th>
+                <th>Ortalama</th>
+                <th>İşlem</th> <!-- ✅ Yeni sütun -->
+            </tr>
+        </thead> 
+        <tbody class="text-center">
+            @foreach (var ogr in Model)
+            {
+                <tr>
+                    <td>@ogr.OgrenciNo</td>
+                    <td>@ogr.AdSoyad</td>
+                    <td>@ogr.Sinif</td>
+                    <td>@ogr.Ortalama</td>
+                    <td>
+                        <!-- ✅ Başarı Grafiği Butonu -->
+                        <a class="btn btn-outline-info btn-sm"
+                           asp-action="BasariGrafik"
+                           asp-controller="Ogretmen"
+                           asp-route-ogrenciNo="@ogr.OgrenciNo">
+                            📊 Başarı Grafiği
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

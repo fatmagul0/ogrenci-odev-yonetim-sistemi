@@ -1,0 +1,41 @@
+﻿@{
+    var ogrenciNo = Context.Session.GetString("OgrenciNo");
+    if (ogrenciNo == null)
+    {
+        Context.Response.Redirect("/Account/OgrenciLogin");
+    }
+
+    ViewData["Title"] = "Öğrenci Paneli";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-light fw-bold">👋 Hoş geldiniz @Context.Session.GetString("AdSoyad")</h2>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card bg-dark text-white border-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📘 Ödevlerim</h5>
+                    <a href="/Ogrenci/Odevlerim" class="btn btn-outline-info btn-sm mt-2">Git</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-dark text-white border-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📊 Notlarım</h5>
+                    <a href="/Ogrenci/Notlarim" class="btn btn-outline-info btn-sm mt-2">Git</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-dark text-white border-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📈 Kota Bilgim</h5>
+                    <a href="/Ogrenci/KotaBilgim" class="btn btn-outline-warning btn-sm mt-2">Git</a> <!-- ✅ düzeltilen link -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

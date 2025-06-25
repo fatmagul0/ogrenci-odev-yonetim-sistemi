@@ -1,0 +1,21 @@
+﻿@model OgrenciOdevYonetimSistemi.Models.OgrenciKota
+
+@{
+    ViewData["Title"] = "Kota Bilgim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5 text-center text-white">
+    <h2>📈 @Model.AdSoyad (@Model.Sinif) - Kota Bilgisi</h2>
+
+    <div class="mt-4">
+        <p class="fs-5">Toplam hakkınız: <strong>@Model.MaksimumOdevSayisi</strong></p>
+        <p class="fs-5">Yapılan ödev sayısı: <strong class="text-info">@Model.YapilanOdevSayisi</strong></p>
+        <p class="fs-5">
+            Kalan hakkınız:
+            <strong class="text-success">@(@Model.MaksimumOdevSayisi - @Model.YapilanOdevSayisi)</strong>
+        </p>
+    </div>
+
+    <a class="btn btn-outline-light mt-4" href="/Ogrenci/Panel">⬅️ Geri Dön</a>
+</div>

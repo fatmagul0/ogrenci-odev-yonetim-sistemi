@@ -1,0 +1,152 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var path = Context.Request.Path.ToString().ToLower();
+    var ogrenciNo = Context.Session.GetString("OgrenciNo");
+    var ogretmenAd = Context.Session.GetString("OgretmenAd");
+
+    var isLoginSayfasi = path.Contains("/account/ogrencilogin") || path.Contains("/account/ogretmenlogin") || path.Contains("/account/logout");
+
+    if (!isLoginSayfasi && path.Contains("/ogrenci") && ogrenciNo == null)
+    {
+        Context.Response.Redirect("/Account/OgrenciLogin");
+    }
+    else if (!isLoginSayfasi && path.Contains("/ogretmen") && ogretmenAd == null)
+    {
+        Context.Response.Redirect("/Account/OgretmenLogin");
+    }
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Öğrenci Ödev Sistemi</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+
+    <style>
+        body {
+            background: #121212;
+            color: #f1f1f1;
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .navbar {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link {
+            font-weight: 500;
+        }
+
+        .footer {
+            font-size: 0.875rem;
+        }
+
+        .main-container {
+            padding-top: 80px;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.7);
+            transform: scale(1.05);
+        }
+
+        .tilt-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-controller="Account" asp-action="Login">📘 Ödev Sistemi</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    @if (ogrenciNo != null && Context.Request.Path.Value.Contains("/ogrenci"))
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Ogrenci" asp-action="Panel"><i class="bi bi-house-door-fill"></i> Panel</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Ogrenci" asp-action="Odevlerim"><i class="bi bi-journal-text"></i> Ödevlerim</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Ogrenci" asp-action="Notlarim"><i class="bi bi-bar-chart-line"></i> Notlarım</a></li>
+                        <li class="nav-item"><a class="nav-link text-warning fw-bold" asp-controller="Account" asp-action="Logout"><i class="bi bi-box-arrow-right"></i> Çıkış</a></li>
+                    }
+                    else if (ogretmenAd != null && Context.Request.Path.Value.Contains("/ogretmen"))
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Ogretmen" asp-action="Panel"><i class="bi bi-speedometer"></i> Öğretmen Paneli</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Ogretmen" asp-action="OdevVer"><i class="bi bi-journal-plus"></i> Ödev Ver</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Ogretmen" asp-action="NotGir"><i class="bi bi-pencil-square"></i> Not Gir</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Ogretmen" asp-action="VerilenOdevler"><i class="bi bi-list-check"></i> Verilen Ödevler</a></li>
+                        <li class="nav-item"><a class="nav-link text-warning fw-bold" asp-controller="Account" asp-action="Logout"><i class="bi bi-box-arrow-right"></i> Çıkış</a></li>
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="OgrenciLogin"><i class="bi bi-box-arrow-in-right"></i> Giriş</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    @* tüm TempData mesajları _Alerts partial’ı ile buradan çıkarılacak *@
+
+    <main class="container main-container">
+        @await Html.PartialAsync("_Alerts") 
+        @RenderBody()
+    </main>
+
+
+
+    <footer class="footer text-center mt-5 mb-3 text-muted">
+        © 2025 - Öğrenci Ödev Sistemi
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>AOS.init();</script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 70 },
+                color: { value: "#00bcd4" },
+                shape: { type: "circle" },
+                opacity: { value: 0.4 },
+                size: { value: 2.5 },
+                line_linked: { enable: true, color: "#00bcd4" },
+                move: { enable: true, speed: 1.5 }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: true, mode: "repulse" } },
+                modes: { repulse: { distance: 100 } }
+            },
+            retina_detect: true
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

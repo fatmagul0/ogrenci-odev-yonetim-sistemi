@@ -1,0 +1,19 @@
+﻿@* Views/Shared/_Alerts.cshtml *@
+@{
+    var basarili = TempData["Basarili"]?.ToString();
+    var uyari = TempData["Uyari"]?.ToString();
+}
+
+@if (!string.IsNullOrEmpty(basarili))
+{
+    <div class="alert alert-success text-center fw-bold my-3" role="alert">
+        ✅ @basarili
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(uyari))
+{
+    <div class="alert alert-warning text-center fw-bold my-3" role="alert">
+        ⚠️ @uyari
+    </div>
+}

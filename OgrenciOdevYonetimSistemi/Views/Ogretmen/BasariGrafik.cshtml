@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Başarı Grafiği";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center fw-bold text-primary mb-3">📊 Başarı Durumu</h2>
+    <p class="text-center text-muted">Öğrenci: <strong>@ViewBag.OgrenciAd</strong> | Sınıf: <strong>@ViewBag.Sinif</strong></p>
+
+    <div class="row justify-content-center mt-4 g-4">
+        <!-- Grafik Alanı -->
+        <div class="col-md-6">
+            <canvas id="grafikDonut"></canvas>
+        </div>
+
+        <!-- Bilgilendirme Kartı -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">🎯 Sınav Ortalaması</h5>
+                    <p class="display-6 fw-bold text-success">@ViewBag.SinavOrtalama</p>
+                    <hr />
+                    <h5 class="card-title mt-3">📘 Ödev Tamamlama</h5>
+                    <p class="fs-4 fw-semibold text-info">@ViewBag.OdevOrani%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('grafikDonut').getContext('2d');
+        const grafik = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Sınav Başarısı', 'Eksik Kalan'],
+                datasets: [{
+                    data: [@ViewBag.SinavOrtalama, @(100 - ViewBag.SinavOrtalama)],
+                    backgroundColor: ['#198754', '#dee2e6'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}

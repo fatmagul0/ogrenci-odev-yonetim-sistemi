@@ -1,0 +1,49 @@
+﻿@model List<OgrenciOdevYonetimSistemi.Models.NotGirViewModel>
+
+@{
+    ViewData["Title"] = "Not Gir";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center fw-bold text-primary mb-4">📋 Öğrencilere Not Gir</h2>
+
+    <form asp-action="NotGir" method="post">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>👤 Ad Soyad</th>
+                        <th>📝 Vize</th>
+                        <th>📚 Final</th>
+                        <th>📂 Proje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(m => m[i].OgrenciId)
+                                @Model[i].AdSoyad
+                            </td>
+                            <td>@Html.TextBoxFor(m => m[i].Vize, new { @class = "form-control text-center", type = "number", min = "0", max = "100" })</td>
+                            <td>@Html.TextBoxFor(m => m[i].Final, new { @class = "form-control text-center", type = "number", min = "0", max = "100" })</td>
+                            <td>@Html.TextBoxFor(m => m[i].Proje, new { @class = "form-control text-center", type = "number", min = "0", max = "100" })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success fw-bold px-4">
+                <i class="bi bi-check-circle"></i> Notları Kaydet
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

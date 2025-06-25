@@ -1,0 +1,119 @@
+﻿@model OgrenciOdevYonetimSistemi.Models.OdevVerViewModel
+
+@{
+    ViewData["Title"] = "Ödev Ver";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var siniflar = ViewBag.Siniflar as List<string>;
+}
+@await Html.PartialAsync("_Alerts")  <!-- ✅ ALERT -->
+
+
+<div class="container mt-5">
+    <h2 class="text-center fw-bold text-info mb-4">📤 Yeni Ödev Ver</h2>
+
+    <div class="text-center mb-4">
+        <button class="btn btn-outline-primary me-2" onclick="gosterForm('ozel')">🎯 Öğrenciye Özel</button>
+        <button class="btn btn-outline-success" onclick="gosterForm('sinif')">👥 Sınıfa Toplu</button>
+    </div>
+
+    <!-- Bireysel Form -->
+    <div id="ozel-form" style="display:none;">
+        <div class="card border-info mb-4">
+            <div class="card-header text-bg-info">🎯 Bireysel Ödev Ver</div>
+            <div class="card-body">
+                <form asp-action="OdevVer" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label>Öğrenci Numarası</label>
+                        <input asp-for="OgrenciNo" class="form-control" placeholder="202301001" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Ödev Konusu</label>
+                        <input asp-for="Konu" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Teslim Tarihi</label>
+                        <input asp-for="TeslimTarihi" type="date" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Ödev Dosyası</label>
+                        <input asp-for="EkDosya" type="file" class="form-control" />
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-info">Ödevi Ver</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toplu Form -->
+    <div id="sinif-form" style="display:none;">
+        <div class="card border-success">
+            <div class="card-header text-bg-success">👥 Sınıfa Ödev Ver</div>
+            <div class="card-body">
+                <form asp-action="OdevVer" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label>Sınıf Seçiniz</label>
+                        <select class="form-select" name="Sinif" id="sinif-select" onchange="ogrenciGetir()">
+                            <option value="">-- Sınıf Seçin --</option>
+                            @foreach (var sinif in siniflar)
+                            {
+                                <option value="@sinif">@sinif</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Öğrenciler</label>
+                        <select class="form-select" name="SeciliOgrenciler" multiple id="ogrenci-listesi"></select>
+                        <small class="text-muted">CTRL tuşuyla çoklu seçim yapabilirsiniz.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label>Ödev Konusu</label>
+                        <input asp-for="Konu" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Teslim Tarihi</label>
+                        <input asp-for="TeslimTarihi" type="date" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Ödev Dosyası</label>
+                        <input asp-for="EkDosya" type="file" class="form-control" />
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success">Toplu Gönder</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function gosterForm(tip) {
+            document.getElementById("ozel-form").style.display = tip === "ozel" ? "block" : "none";
+            document.getElementById("sinif-form").style.display = tip === "sinif" ? "block" : "none";
+        }
+
+        function ogrenciGetir() {
+            var sinif = document.getElementById("sinif-select").value;
+            var ogrenciListesi = document.getElementById("ogrenci-listesi");
+            ogrenciListesi.innerHTML = "";
+
+            if (!sinif) return;
+
+            fetch(`/Ogretmen/OgrencileriGetir?sinif=${sinif}`)
+                .then(r => r.json())
+                .then(data => {
+                    data.forEach(ogr => {
+                        var option = document.createElement("option");
+                        option.value = ogr.okulNo;
+                        option.text = ogr.adSoyad + " (" + ogr.okulNo + ")";
+                        ogrenciListesi.appendChild(option);
+                    });
+                });
+        }
+    </script>
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

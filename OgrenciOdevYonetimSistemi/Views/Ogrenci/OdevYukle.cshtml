@@ -1,0 +1,30 @@
+﻿@model OdevYukleViewModel
+@{
+    ViewData["Title"] = "Ödev Yükle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">📤 Ödev Yükleme Sayfası</h2>
+
+    @if (TempData["Mesaj"] != null)
+    {
+        <div class="alert alert-success">@TempData["Mesaj"]</div>
+    }
+
+    <form asp-action="OdevYukle" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Ödev Dosyası (PDF / DOCX)</label>
+            <input asp-for="Dosya" type="file" class="form-control" />
+            <span asp-validation-for="Dosya" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success fw-bold">Yükle 🚀</button>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

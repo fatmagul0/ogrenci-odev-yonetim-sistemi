@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Öğretmen Paneli";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center fw-bold text-primary mb-4">
+        👨‍🏫 Hoş geldiniz, @Context.Session.GetString("OgretmenAd")
+    </h2>
+
+    <p class="text-center text-muted mb-5">
+        Aşağıdaki yönetim seçeneklerinden birini seçebilirsiniz:
+    </p>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+
+        <!-- 🟦 Öğrenci Listesi -->
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill fs-1 text-success"></i>
+                    <h5 class="card-title mt-2">Öğrenci Listesi</h5>
+                    <p class="card-text">Sistemde kayıtlı tüm öğrencileri listeleyin, başarı durumlarını görüntüleyin.</p>
+                    <a class="btn btn-outline-success btn-sm" asp-controller="Ogretmen" asp-action="OgrenciListesi">Git</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🟦 Ödev Ver -->
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-upload fs-1 text-info"></i>
+                    <h5 class="card-title mt-2">Ödev Ver</h5>
+                    <p class="card-text">Belirli bir öğrenciye ödev yükleyin ve teslim tarihini ayarlayın.</p>
+                    <a class="btn btn-outline-info btn-sm" asp-controller="Ogretmen" asp-action="OdevVer">Git</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🟨 Kota Yönetimi -->
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-balance-scale fs-1 text-warning"></i>
+                    <h5 class="card-title mt-2">Kota Yönetimi</h5>
+                    <p class="card-text">Öğrencilerin günlük ödev kotasını denetleyin ve gerektiğinde güncelleyin.</p>
+                    <a class="btn btn-outline-warning btn-sm" asp-controller="Ogretmen" asp-action="KotaYonetimi">Git</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📚 Verilen Ödevler -->
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-folder2-open fs-1 text-secondary"></i>
+                    <h5 class="card-title mt-2">Verilen Ödevler</h5>
+                    <p class="card-text">Daha önce verilmiş tüm ödevlerin listesini görüntüleyin.</p>
+                    <a class="btn btn-outline-secondary btn-sm" asp-controller="Ogretmen" asp-action="VerilenOdevler">Git</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿@model List<OgrenciOdevYonetimSistemi.Models.OdevTeslim>
+
+@{
+    ViewData["Title"] = "Verilen Ödevler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center fw-bold text-success mb-4">📚 Verilen Ödevler</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            Henüz hiç ödev verilmemiş.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover text-center align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>🎓 Öğrenci No</th>
+                                <th>👤 Ad Soyad</th>
+                                <th>📅 Teslim Tarihi</th>
+                                <th>📎 Ek Dosya</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var odev in Model)
+                            {
+                                <tr>
+                                    <td>@odev.Ogrenci?.OkulNo</td>
+                                    <td>@odev.Ogrenci?.AdSoyad</td>
+                                    <td>@odev.YuklenmeTarihi.ToString("dd.MM.yyyy")</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(odev.DosyaAdi))
+                                        {
+                                            <a class="btn btn-sm btn-outline-primary"
+                                               href="/verilenOdevDosyalari/@odev.DosyaAdi"
+                                               target="_blank">
+                                                <i class="bi bi-file-earmark-arrow-down"></i> Görüntüle
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted"><i class="bi bi-x-circle"></i> Yok</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

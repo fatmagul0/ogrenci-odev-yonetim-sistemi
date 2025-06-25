@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Öğrenci Giriş";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@* Sistemin öğrenci giriş kapısı burasıdır.*@
+ 
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-primary fw-bold">👨‍🎓 Öğrenci Girişi</h2>
+
+    <form method="post" asp-action="OgrenciLogin">
+        <div class="mb-3">
+            <label class="form-label">Okul No</label>
+            <input type="text" name="OkulNo" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">TC Kimlik No</label>
+            <input type="password" name="TCNo" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary fw-bold">Giriş Yap</button>
+
+        @if (ViewBag.Hata != null)
+        {
+            <div class="alert alert-danger mt-3">@ViewBag.Hata</div>
+        }
+    </form>
+</div>

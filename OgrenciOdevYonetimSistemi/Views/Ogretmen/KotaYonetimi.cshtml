@@ -1,0 +1,52 @@
+﻿@model List<OgrenciOdevYonetimSistemi.Models.OgrenciKota>
+
+@{
+    ViewData["Title"] = "Kota Yönetimi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center fw-bold text-warning mb-4">⚖️ Öğrenci Ödev Kotası Yönetimi</h2>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>🎓 Öğrenci No</th>
+                            <th>👤 Ad Soyad</th>
+                            <th>🏫 Sınıf</th>
+                            <th>📌 Maks. Ödev</th>
+                            <th>📥 Yapılan</th>
+                            <th>📊 Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var k in Model)
+                        {
+                            var kalan = k.MaksimumOdevSayisi - k.YapilanOdevSayisi;
+                            <tr>
+                                <td>@k.OgrenciNo</td>
+                                <td>@k.AdSoyad</td>
+                                <td>@k.Sinif</td>
+                                <td>@k.MaksimumOdevSayisi</td>
+                                <td>@k.YapilanOdevSayisi</td>
+                                <td>
+                                    @if (k.YapilanOdevSayisi >= k.MaksimumOdevSayisi)
+                                    {
+                                        <span class="badge bg-danger px-3 py-2">Kota Dolu</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success px-3 py-2">Uygun - @kalan adet kaldı</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

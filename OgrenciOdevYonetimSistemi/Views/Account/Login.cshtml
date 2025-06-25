@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Giriş Türü Seçimi";
+}
+
+<style>
+    body {
+        background: linear-gradient(to right, #E0C3FC, #8EC5FC);
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .login-type-container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+    }
+
+        .login-type-container h2 {
+            font-size: 28px;
+            color: #4B0082;
+            margin-bottom: 30px;
+        }
+
+        .login-type-container a {
+            display: block;
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+    .ogrenci-btn {
+        background-color: #6C63FF;
+        color: white;
+    }
+
+    .ogretmen-btn {
+        background-color: #FF8C00;
+        color: white;
+    }
+
+    .ogrenci-btn:hover {
+        background-color: #574B90;
+    }
+
+    .ogretmen-btn:hover {
+        background-color: #e07b00;
+    }
+</style>
+
+<div class="login-type-container">
+    <h2>Giriş Türünü Seçin</h2>
+    <a href="/Account/OgrenciLogin" class="ogrenci-btn">👨‍🎓 Öğrenci Girişi</a>
+    <a href="/Account/OgretmenLogin" class="ogretmen-btn">👨‍🏫 Öğretmen Girişi</a>
+</div>

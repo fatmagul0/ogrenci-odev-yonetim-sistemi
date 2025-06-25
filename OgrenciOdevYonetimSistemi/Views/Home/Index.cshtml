@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Öğrenci Ödev Yönetim Sistemi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container d-flex flex-column align-items-center justify-content-center" style="min-height: 90vh;">
+    <div class="text-center">
+        <h1 class="display-4 fw-bold text-primary mb-3 animate__animated animate__fadeInDown">
+            📘 Ödev Yönetim Sistemine Hoş Geldiniz!
+        </h1>
+        <p class="lead text-muted animate__animated animate__fadeInUp">
+            Öğrenciler için akıllı ödev yönetimi, öğretmenler için kolay takip, veliler için şeffaflık.
+        </p>
+
+        <div class="mt-4">
+            <a href="/Account/OgrenciLogin" class="btn btn-outline-success btn-lg mx-2">
+                👩‍🎓 Öğrenci Giriş
+            </a>
+            <a href="/Account/OgretmenLogin" class="btn btn-outline-primary btn-lg mx-2">
+                👨‍🏫 Öğretmen Giriş
+            </a>
+        </div>
+    </div>
+
+    <div class="row mt-5 w-100">
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">⏱️ Kota Takibi</h5>
+                    <p class="card-text text-muted">Öğrenci başına günlük/haftalık ödev yükü kontrolü.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-3 mt-md-0">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">📊 Başarı Grafikleri</h5>
+                    <p class="card-text text-muted">Not ve ödev performanslarının grafiklerle izlenmesi.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-3 mt-md-0">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">🧠 Yapay Zeka Desteği</h5>
+                    <p class="card-text text-muted">Kişiye özel çalışma planı önerileri ile gelişim takibi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Animate.css (opsiyonel animasyon için CDN) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
