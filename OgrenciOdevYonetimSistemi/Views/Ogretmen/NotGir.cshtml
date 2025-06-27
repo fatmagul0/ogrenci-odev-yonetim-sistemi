@@ -8,6 +8,11 @@
 <div class="container mt-5">
     <h2 class="text-center fw-bold text-primary mb-4">📋 Öğrencilere Not Gir</h2>
 
+    @if (ViewBag.Basarili != null)
+    {
+        <div class="alert alert-success text-center">@ViewBag.Basarili</div>
+    }
+
     <form asp-action="NotGir" method="post">
         <div class="table-responsive">
             <table class="table table-bordered table-hover text-center">

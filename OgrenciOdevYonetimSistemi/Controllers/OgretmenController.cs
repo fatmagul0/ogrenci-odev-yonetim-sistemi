@@ -200,12 +200,22 @@ namespace OgrenciOdevYonetimSistemi.Controllers
         [HttpGet]
         public IActionResult NotGir()
         {
-            var ogrenciler = _context.Ogrenciler.Select(o => new NotGirViewModel
-            {
-                OgrenciId = o.OgrenciId,
-                AdSoyad = o.AdSoyad
-            }).ToList();
+            var ogrenciler = _context.Ogrenciler
+                .GroupJoin(_context.OgrenciNotlari,
+                    o => o.OgrenciId,
+                    n => n.OgrenciId,
+                    (o, notlar) => new { Ogrenci = o, Not = notlar.FirstOrDefault() })
+                .Select(x => new NotGirViewModel
+                {
+                    OgrenciId = x.Ogrenci.OgrenciId,
+                    AdSoyad = x.Ogrenci.AdSoyad,
+                    Vize = x.Not?.Vize,
+                    Final = x.Not?.Final,
+                    Proje = x.Not?.Proje
+                })
+                .ToList();
 
+            ViewBag.Basarili = TempData["Basarili"];
             return View(ogrenciler);
         }
 
@@ -234,8 +244,8 @@ namespace OgrenciOdevYonetimSistemi.Controllers
             } 
 
             _context.SaveChanges();
-            ViewBag.Basarili = "Notlar başarıyla kaydedildi.";
-            return RedirectToAction("Panel");
+            TempData["Basarili"] = "Notlar başarıyla kaydedildi.";
+            return RedirectToAction("NotGir");
         }
 
         [HttpGet]

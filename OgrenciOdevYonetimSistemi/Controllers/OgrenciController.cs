@@ -66,6 +66,9 @@ namespace OgrenciOdevYonetimSistemi.Controllers
                                  .FirstOrDefault(n => n.OgrenciId == ogrenci.OgrenciId);
 
             double? ortalama = null;
+            string basariDurumu = "Not girişi sağlanmadı";
+            string renk = "secondary";
+
             if (notlar != null)
             {
                 var notList = new List<int?> { notlar.Vize, notlar.Final, notlar.Proje }
@@ -73,17 +76,18 @@ namespace OgrenciOdevYonetimSistemi.Controllers
                                 .Select(n => n.Value);
 
                 if (notList.Any())
+                {
                     ortalama = Math.Round(notList.Average(), 2);
+
+                    basariDurumu = "Yetersiz";
+                    renk = "danger";
+                    if (ortalama >= 85) { basariDurumu = "Pekiyi"; renk = "success"; }
+                    else if (ortalama >= 70) { basariDurumu = "İyi"; renk = "info"; }
+                    else if (ortalama >= 50) { basariDurumu = "Orta"; renk = "warning"; }
+                }
             }
 
             ViewBag.Ortalama = ortalama;
-
-            string basariDurumu = "Yetersiz";
-            string renk = "danger";
-
-            if (ortalama >= 85) { basariDurumu = "Pekiyi"; renk = "success"; }
-            else if (ortalama >= 70) { basariDurumu = "İyi"; renk = "info"; }
-            else if (ortalama >= 50) { basariDurumu = "Orta"; renk = "warning"; }
 
             ViewBag.BasariDurumu = basariDurumu;
             ViewBag.Renk = renk;
