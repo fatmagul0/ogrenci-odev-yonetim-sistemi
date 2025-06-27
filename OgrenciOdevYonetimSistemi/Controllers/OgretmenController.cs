@@ -200,10 +200,21 @@ namespace OgrenciOdevYonetimSistemi.Controllers
         [HttpGet]
         public IActionResult NotGir()
         {
+            var ogretmenId = HttpContext.Session.GetInt32("OgretmenId");
+            if (ogretmenId == null)
+                return RedirectToAction("OgretmenLogin", "Account");
+
+            var notlar = _context.OgrenciNotlari
+                           .Where(n => n.OgretmenId == ogretmenId)
+                           .ToDictionary(n => n.OgrenciId);
+
             var ogrenciler = _context.Ogrenciler.Select(o => new NotGirViewModel
             {
                 OgrenciId = o.OgrenciId,
-                AdSoyad = o.AdSoyad
+                AdSoyad = o.AdSoyad,
+                Vize = notlar.ContainsKey(o.OgrenciId) ? notlar[o.OgrenciId].Vize : null,
+                Final = notlar.ContainsKey(o.OgrenciId) ? notlar[o.OgrenciId].Final : null,
+                Proje = notlar.ContainsKey(o.OgrenciId) ? notlar[o.OgrenciId].Proje : null
             }).ToList();
 
             return View(ogrenciler);
@@ -212,14 +223,19 @@ namespace OgrenciOdevYonetimSistemi.Controllers
         [HttpPost]
         public IActionResult NotGir(List<NotGirViewModel> girilenNotlar)
         {
+            var ogretmenId = HttpContext.Session.GetInt32("OgretmenId");
+            if (ogretmenId == null)
+                return RedirectToAction("OgretmenLogin", "Account");
+
             foreach (var item in girilenNotlar)
             {
-                var mevcut = _context.OgrenciNotlari.FirstOrDefault(n => n.OgrenciId == item.OgrenciId);
+                var mevcut = _context.OgrenciNotlari.FirstOrDefault(n => n.OgrenciId == item.OgrenciId && n.OgretmenId == ogretmenId);
                 if (mevcut == null)
                 {
                     _context.OgrenciNotlari.Add(new OgrenciNot
                     {
                         OgrenciId = item.OgrenciId,
+                        OgretmenId = ogretmenId.Value,
                         Vize = item.Vize,
                         Final = item.Final,
                         Proje = item.Proje
@@ -231,7 +247,7 @@ namespace OgrenciOdevYonetimSistemi.Controllers
                     mevcut.Final = item.Final;
                     mevcut.Proje = item.Proje;
                 }
-            } 
+            }
 
             _context.SaveChanges();
             TempData["Basarili"] = "Notlar başarıyla kaydedildi.";
