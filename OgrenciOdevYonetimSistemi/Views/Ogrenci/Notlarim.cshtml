@@ -1,4 +1,4 @@
-﻿@model OgrenciOdevYonetimSistemi.Models.OgrenciNot
+@model List<OgrenciOdevYonetimSistemi.Models.OgrenciNotViewModel>
 
 @{
     ViewData["Title"] = "Notlarım";
@@ -8,37 +8,34 @@
 <div class="container mt-5">
     <h2 class="text-center fw-bold text-primary mb-4">📝 Notlarım</h2>
 
-    @if (Model != null)
+    @if (Model != null && Model.Any())
     {
-        <div class="row row-cols-1 row-cols-md-2 g-4">
-
-            <!-- 🟦 Not Detay Kartı -->
-            <div class="col">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <h5 class="card-title text-center text-secondary mb-3">📋 Sınav Notları</h5>
-                        <ul class="list-group list-group-flush text-center">
-                            <li class="list-group-item">📘 Vize: <strong>@Model.Vize</strong></li>
-                            <li class="list-group-item">📗 Final: <strong>@Model.Final</strong></li>
-                            <li class="list-group-item">📙 Proje: <strong>@Model.Proje</strong></li>
-                        </ul>
+        foreach (var not in Model)
+        {
+            <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+                <div class="col">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <h5 class="card-title text-center text-secondary mb-3">@not.Ders - @not.OgretmenAd</h5>
+                            <ul class="list-group list-group-flush text-center">
+                                <li class="list-group-item">📘 Vize: <strong>@not.Vize</strong></li>
+                                <li class="list-group-item">📗 Final: <strong>@not.Final</strong></li>
+                                <li class="list-group-item">📙 Proje: <strong>@not.Proje</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">🎯 Ortalama ve Başarı</h5>
+                            <p class="display-5 fw-bold text-@not.Renk">@not.Ortalama</p>
+                            <span class="badge bg-@not.Renk px-4 py-2 fs-6">@not.BasariDurumu</span>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- 🎯 Ortalama Kartı -->
-            <div class="col">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">🎯 Ortalama ve Başarı</h5>
-                        <p class="display-5 fw-bold text-@ViewBag.Renk">@ViewBag.Ortalama</p>
-                        <span class="badge bg-@ViewBag.Renk px-4 py-2 fs-6">@ViewBag.BasariDurumu</span>
-                        <p class="text-muted mt-3">Sistem, notlarınıza göre başarı durumunuzu bu şekilde değerlendirdi.</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        }
     }
     else
     {
