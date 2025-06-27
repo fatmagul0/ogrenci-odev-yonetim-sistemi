@@ -63,32 +63,39 @@ namespace OgrenciOdevYonetimSistemi.Controllers
                 return RedirectToAction("OgrenciLogin", "Account");
 
             var notlar = _context.OgrenciNotlari
-                                 .FirstOrDefault(n => n.OgrenciId == ogrenci.OgrenciId);
+                                 .Where(n => n.OgrenciId == ogrenci.OgrenciId)
+                                 .Include(n => n.Ogretmen)
+                                 .ToList();
 
-            double? ortalama = null;
-            if (notlar != null)
+            var model = new List<OgrenciNotViewModel>();
+            foreach (var not in notlar)
             {
-                var notList = new List<int?> { notlar.Vize, notlar.Final, notlar.Proje }
+                var values = new List<int?> { not.Vize, not.Final, not.Proje }
                                 .Where(n => n.HasValue)
                                 .Select(n => n.Value);
 
-                if (notList.Any())
-                    ortalama = Math.Round(notList.Average(), 2);
+                double? ortalama = values.Any() ? Math.Round(values.Average(), 2) : null;
+                string durum = "Yetersiz";
+                string renk = "danger";
+
+                if (ortalama >= 85) { durum = "Pekiyi"; renk = "success"; }
+                else if (ortalama >= 70) { durum = "İyi"; renk = "info"; }
+                else if (ortalama >= 50) { durum = "Orta"; renk = "warning"; }
+
+                model.Add(new OgrenciNotViewModel
+                {
+                    OgretmenAd = not.Ogretmen.AdSoyad,
+                    Ders = not.Ogretmen.Brans,
+                    Vize = not.Vize,
+                    Final = not.Final,
+                    Proje = not.Proje,
+                    Ortalama = ortalama,
+                    BasariDurumu = durum,
+                    Renk = renk
+                });
             }
 
-            ViewBag.Ortalama = ortalama;
-
-            string basariDurumu = "Yetersiz";
-            string renk = "danger";
-
-            if (ortalama >= 85) { basariDurumu = "Pekiyi"; renk = "success"; }
-            else if (ortalama >= 70) { basariDurumu = "İyi"; renk = "info"; }
-            else if (ortalama >= 50) { basariDurumu = "Orta"; renk = "warning"; }
-
-            ViewBag.BasariDurumu = basariDurumu;
-            ViewBag.Renk = renk;
-
-            return View(notlar);
+            return View(model);
         }
 
         // 📈 KOTA BİLGİM
