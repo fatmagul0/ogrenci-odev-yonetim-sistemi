@@ -234,7 +234,7 @@ namespace OgrenciOdevYonetimSistemi.Controllers
             } 
 
             _context.SaveChanges();
-            ViewBag.Basarili = "Notlar başarıyla kaydedildi.";
+            TempData["Basarili"] = "Notlar başarıyla kaydedildi.";
             return RedirectToAction("Panel");
         }
 
