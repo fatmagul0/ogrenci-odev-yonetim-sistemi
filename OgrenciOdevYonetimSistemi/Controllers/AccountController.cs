@@ -66,6 +66,7 @@ namespace OgrenciOdevYonetimSistemi.Controllers
             if (ogretmen != null)
             {
                 HttpContext.Session.SetString("OgretmenAd", ogretmen.AdSoyad);
+                HttpContext.Session.SetInt32("OgretmenId", ogretmen.Id);
                 return RedirectToAction("Panel", "Ogretmen");
             }
 
